@@ -1,11 +1,35 @@
-import { View, Text, YStack, Input, XStack, Button } from "tamagui";
+import { View, Text, YStack, Input, XStack, Button, Avatar } from "tamagui";
 import { Search } from "@tamagui/lucide-icons";
 import React from "react";
 import { router } from "expo-router";
+import { ProfileData } from "./utils";
+import { ResultCard } from "./components/ResultCard";
+
 export default function SearchUser() {
   const [value, setValue] = React.useState("");
   const [showError, setShowError] = React.useState(false);
-
+  const [data, setData] = React.useState<ProfileData[]>([
+    {
+      name: "Elmehdi Assamer",
+      login: "Eassamer",
+      id: 0,
+      Level: "13",
+      percentage: "78",
+      image:
+        "https://cdn.intra.42.fr/users/4a53b2f42d02de287e71eb4c6d8a9d1c/eassamer.jpg",
+      color: "#00babc",
+    },
+    {
+      name: "Elmehdi Assamer",
+      login: "Eassamer",
+      id: 0,
+      Level: "13",
+      percentage: "8",
+      image:
+        "https://cdn.intra.42.fr/users/4a53b2f42d02de287e71eb4c6d8a9d1c/eassamer.jpg",
+      color: "#b61282",
+    },
+  ]);
   const handlePress = () => {
     if (value === "") {
       setShowError(true);
@@ -39,7 +63,7 @@ export default function SearchUser() {
           height: "100%",
         }}
       >
-        <XStack alignItems="center" space={22} w="100%" px={10}>
+        <XStack alignItems="center" space={22} w="100%" px={20}>
           <Input
             flex={1}
             size={"$5"}
@@ -66,6 +90,20 @@ export default function SearchUser() {
             Please enter a login!
           </Text>
         )}
+        <View
+          style={{
+            width: "100%",
+            height: "80%",
+            padding: 20,
+            justifyContent: data ? "flex-start" : "center",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          {data.map((item, index) => (
+            <ResultCard key={index} profileData={item} />
+          ))}
+        </View>
       </View>
     </YStack>
   );
