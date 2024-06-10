@@ -1,5 +1,6 @@
 import { Avatar, View, Text } from "tamagui";
 import { ProfileData } from "../utils";
+import { router } from "expo-router";
 export const ResultCard = ({ profileData }: { profileData: ProfileData }) => {
   const { name, login, id, Level, percentage, image, color } = profileData;
   return (
@@ -16,6 +17,7 @@ export const ResultCard = ({ profileData }: { profileData: ProfileData }) => {
         alignItems: "flex-start",
         justifyContent: "flex-start",
       }}
+      onPress={() => router.push(`/profile`)}
     >
       <Avatar circular size="$6">
         <Avatar.Image accessibilityLabel="Cam" src={image} />
