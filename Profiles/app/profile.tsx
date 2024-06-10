@@ -111,7 +111,7 @@ export default function Profile() {
           orientation="horizontal"
           flexDirection="column"
           width={"100%"}
-          height={300}
+          height={"auto"}
           borderRadius="$4"
           borderWidth="$0.25"
           overflow="hidden"
@@ -134,8 +134,54 @@ export default function Profile() {
             </Tabs.Tab>
           </Tabs.List>
           <Separator />
-          <Tabs.Content value="tab1" width={"100%"} ai={"center"} jc={"center"}>
-            <H5>Profile</H5>
+          <Tabs.Content
+            value="tab1"
+            width={"100%"}
+            ai={"center"}
+            jc={"center"}
+            gap={10}
+            py={14}
+          >
+            <Text
+              style={{
+                color: "black",
+                fontSize: 18,
+              }}
+            >
+              Email :{" "}
+              <span style={{ color: color }}>
+                elmehdi.assamer@student.1337.ma
+              </span>
+            </Text>
+            <Text
+              style={{
+                color: "black",
+                fontSize: 18,
+              }}
+            >
+              Wallet: <span style={{ color: color }}>62₳</span>
+            </Text>
+            <Text
+              style={{
+                color: "black",
+                fontSize: 18,
+              }}
+            >
+              Grade: <span style={{ color: color }}>Member</span>
+            </Text>
+            <Text
+              style={{
+                color: color,
+                textDecorationLine: "underline",
+                textDecorationColor: color,
+                fontSize: 18,
+                fontWeight: "bold",
+                fontFamily: "$body",
+                letterSpacing: 1,
+              }}
+            >
+              e2r3p2
+            </Text>
           </Tabs.Content>
 
           <Tabs.Content value="tab2" width={"100%"} ai={"center"} jc={"center"}>
