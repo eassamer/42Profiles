@@ -2,25 +2,26 @@ import { Avatar, View, Text } from "tamagui";
 import { ProfileData } from "../utils";
 import { router } from "expo-router";
 export const ResultCard = ({ profileData }: { profileData: ProfileData }) => {
-  const { name, login, id, Level, percentage, image, color } = profileData;
+  const { login, usual_full_name, image } = profileData;
+  const color = "#2b6cb0";
   return (
     <View
       flexDirection="row"
       gap={10}
       style={{
         width: "100%",
-        height: 100,
+        height: 90,
         backgroundColor: "white",
         borderRadius: 10,
         padding: 18,
 
-        alignItems: "flex-start",
+        alignItems: "center",
         justifyContent: "flex-start",
       }}
       onPress={() => router.push(`/profile`)}
     >
       <Avatar circular size="$6">
-        <Avatar.Image accessibilityLabel="Cam" src={image} />
+        <Avatar.Image accessibilityLabel="Cam" src={image.link} />
         <Avatar.Fallback backgroundColor="$blue10" />
       </Avatar>
       <View
@@ -38,7 +39,7 @@ export const ResultCard = ({ profileData }: { profileData: ProfileData }) => {
             fontWeight: "bold",
           }}
         >
-          {name}
+          {usual_full_name}
         </Text>
         <Text
           style={{
@@ -49,44 +50,6 @@ export const ResultCard = ({ profileData }: { profileData: ProfileData }) => {
         >
           {login}
         </Text>
-        <View
-          ai={"center"}
-          jc={"center"}
-          style={{
-            width: "100%",
-            height: 20,
-            borderRadius: 5,
-            backgroundColor: "transparent",
-            border: "1px solid",
-            borderColor: color,
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "bold",
-              color: "#000",
-              zIndex: 1,
-              position: "absolute",
-            }}
-          >
-            {Level} - {percentage}%
-          </Text>
-          <View
-            style={{
-              position: "absolute",
-              width: `${percentage}%`,
-              height: "100%",
-              borderRadius: 1,
-              backgroundColor: color,
-              left: 0,
-              top: 0,
-              zIndex: 0,
-            }}
-          ></View>
-        </View>
       </View>
     </View>
   );

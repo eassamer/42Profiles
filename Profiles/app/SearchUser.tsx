@@ -8,34 +8,31 @@ import { ResultCard } from "./components/ResultCard";
 export default function SearchUser() {
   const [value, setValue] = React.useState("");
   const [showError, setShowError] = React.useState(false);
-  const [data, setData] = React.useState<ProfileData[]>([
-    {
-      name: "Elmehdi Assamer",
-      login: "Eassamer",
-      id: 0,
-      Level: "13",
-      percentage: "78",
-      image:
-        "https://cdn.intra.42.fr/users/4a53b2f42d02de287e71eb4c6d8a9d1c/eassamer.jpg",
-      color: "#00babc",
-    },
-    {
-      name: "Elmehdi Assamer",
-      login: "Eassamer",
-      id: 0,
-      Level: "13",
-      percentage: "8",
-      image:
-        "https://cdn.intra.42.fr/users/4a53b2f42d02de287e71eb4c6d8a9d1c/eassamer.jpg",
-      color: "#b61282",
-    },
-  ]);
-  const handlePress = () => {
+  const [data, setData] = React.useState<ProfileData[]>([]);
+  const token =
+    "2e642f89a06e4f2d78026d367a5bd29310c96943e757ae152bb335fa48f734a7";
+  const handlePress = async () => {
     if (value === "") {
       setShowError(true);
     } else {
       setShowError(false);
-      console.log(value);
+      const data = await fetch(
+        `https://api.intra.42.fr/v2/campus/16/users?filter[login]=${value}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          credentials: "include",
+          redirect: "follow",
+          referrerPolicy: "no-referrer",
+        }
+      ).then((response) => {
+        return response.json();
+      });
+
+      setData(data);
     }
   };
   return (
