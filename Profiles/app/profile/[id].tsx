@@ -218,7 +218,7 @@ export default function Profile() {
             location={location}
             color={color}
           />
-          <MarkSection />
+          <MarkSection projects={data?.projects_users} />
           <Tabs.Content value="tab3" width={"100%"} ai={"center"} jc={"center"}>
             <H5>Skills</H5>
           </Tabs.Content>

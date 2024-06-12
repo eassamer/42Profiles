@@ -2,7 +2,9 @@ import { View, Text, YStack, Button, Image } from "tamagui";
 import { LogIn } from "@tamagui/lucide-icons";
 import { Link, router } from "expo-router";
 import { StyleSheet } from "react-native";
+import { getValueFor } from "./utils";
 export default function Index() {
+  const token = getValueFor("token");
   return (
     <YStack
       style={{ height: "100%", width: "100%", backgroundColor: "#060317" }}
