@@ -29,3 +29,6 @@ export interface ProfileData {
   pool_month: string;
   wallet: number;
 }
+
+export const token =
+  "bd769b68a35bdecf2fa2212d645a7ef3cf380d0b97cfa0f8d5df0b518f15b6e6";

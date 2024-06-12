@@ -2,15 +2,14 @@ import { View, Text, YStack, Input, XStack, Button, Avatar } from "tamagui";
 import { Search } from "@tamagui/lucide-icons";
 import React from "react";
 import { router } from "expo-router";
-import { ProfileData } from "./utils";
+import { ProfileData, token } from "./utils";
 import { ResultCard } from "./components/ResultCard";
 
 export default function SearchUser() {
   const [value, setValue] = React.useState("");
   const [showError, setShowError] = React.useState(false);
   const [data, setData] = React.useState<ProfileData[]>([]);
-  const token =
-    "2e642f89a06e4f2d78026d367a5bd29310c96943e757ae152bb335fa48f734a7";
+
   const handlePress = async () => {
     if (value === "") {
       setShowError(true);

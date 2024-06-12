@@ -2,7 +2,7 @@ import { Avatar, View, Text } from "tamagui";
 import { ProfileData } from "../utils";
 import { router } from "expo-router";
 export const ResultCard = ({ profileData }: { profileData: ProfileData }) => {
-  const { login, usual_full_name, image } = profileData;
+  const { id, login, usual_full_name, image } = profileData;
   const color = "#2b6cb0";
   return (
     <View
@@ -18,7 +18,7 @@ export const ResultCard = ({ profileData }: { profileData: ProfileData }) => {
         alignItems: "center",
         justifyContent: "flex-start",
       }}
-      onPress={() => router.push(`/profile`)}
+      onPress={() => router.push(`/profile/${id}`)}
     >
       <Avatar circular size="$6">
         <Avatar.Image accessibilityLabel="Cam" src={image.link} />

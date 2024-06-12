@@ -48,7 +48,7 @@ export default function Index() {
             router.push("/SearchUser");
           }}
         >
-          Sign In
+          Welcome
         </Button>
         <Link href="/SearchUser" style={styles.link}>
           Github

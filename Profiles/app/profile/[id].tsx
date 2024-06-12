@@ -1,3 +1,5 @@
+import { useLocalSearchParams } from "expo-router";
+
 import {
   View,
   YStack,
@@ -12,9 +14,63 @@ import {
 } from "tamagui";
 import { ArrowLeft } from "@tamagui/lucide-icons";
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { ProfileData, token } from "../utils";
+import { InfoSection } from "../components/info/InfoSection";
+import { MarkSection } from "../components/info/MarkSection";
 export default function Profile() {
+  const { id } = useLocalSearchParams();
+  const [data, setData] = useState<ProfileData>({
+    id: 0,
+    login: "",
+    usual_full_name: "",
+    image: {
+      link: "",
+      versions: {
+        large: "",
+        medium: "",
+        small: "",
+        micro: "",
+      },
+    },
+    correction_point: 2,
+    wallet: 0,
+    email: "",
+    location: "",
+    first_name: "",
+    last_name: "",
+    pool_month: "",
+  });
+
+  useEffect(() => {
+    (async () => {
+      const data = await fetch(`https://api.intra.42.fr/v2/users/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        credentials: "include",
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+      }).then((response) => {
+        return response.json();
+      });
+
+      setData(data);
+    })();
+  }, [id]);
   const color = "#00babc";
+
+  const {
+    login,
+    usual_full_name,
+    image,
+    cursus_users,
+    email,
+    location,
+    wallet,
+  } = data;
   return (
     <YStack
       style={{ height: "100%", width: "100%", backgroundColor: "#060317" }}
@@ -39,7 +95,14 @@ export default function Profile() {
           icon={ArrowLeft}
           onPress={() => router.back()}
         ></Button>
-        <H2 style={{ color: "white", fontSize: "24px", fontWeight: "bold" }}>
+        <H2
+          style={{
+            color: "white",
+            fontSize: "24px",
+            fontWeight: "bold",
+            letterSpacing: "2px",
+          }}
+        >
           Profile
         </H2>
       </View>
@@ -53,7 +116,7 @@ export default function Profile() {
       >
         <Image
           source={{
-            uri: "https://cdn.intra.42.fr/users/4a53b2f42d02de287e71eb4c6d8a9d1c/eassamer.jpg",
+            uri: image.link,
             width: 200,
             height: 200,
           }}
@@ -62,11 +125,25 @@ export default function Profile() {
             border: "2px solid white",
           }}
         ></Image>
-        <H2 style={{ color: "white", fontSize: "24px", fontWeight: "bold" }}>
-          El mehdi Assamer
+        <H2
+          style={{
+            color: "white",
+            fontSize: "24px",
+            fontWeight: "bold",
+            letterSpacing: "1px",
+          }}
+        >
+          {usual_full_name}
         </H2>
-        <H2 style={{ color: "white", fontSize: "15px", fontWeight: "bold" }}>
-          @Eassamer
+        <H2
+          style={{
+            color: "white",
+            fontSize: "15px",
+            fontWeight: "bold",
+            letterSpacing: "1px",
+          }}
+        >
+          @{login}
         </H2>
         <View
           ai={"center"}
@@ -91,12 +168,12 @@ export default function Profile() {
               position: "absolute",
             }}
           >
-            13 - 78%
+            {cursus_users?.[1].level?.toFixed(2)}%
           </Text>
           <View
             style={{
               position: "absolute",
-              width: "78%",
+              width: ((cursus_users?.[1].level as number) % 1) * 100 + "%",
               height: "100%",
               borderRadius: 1,
               backgroundColor: color,
@@ -134,60 +211,14 @@ export default function Profile() {
             </Tabs.Tab>
           </Tabs.List>
           <Separator />
-          <Tabs.Content
-            value="tab1"
-            width={"100%"}
-            ai={"center"}
-            jc={"center"}
-            gap={10}
-            py={14}
-          >
-            <Text
-              style={{
-                color: "black",
-                fontSize: 18,
-              }}
-            >
-              Email :{" "}
-              <span style={{ color: color }}>
-                elmehdi.assamer@student.1337.ma
-              </span>
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 18,
-              }}
-            >
-              Wallet: <span style={{ color: color }}>62₳</span>
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 18,
-              }}
-            >
-              Grade: <span style={{ color: color }}>Member</span>
-            </Text>
-            <Text
-              style={{
-                color: color,
-                textDecorationLine: "underline",
-                textDecorationColor: color,
-                fontSize: 18,
-                fontWeight: "bold",
-                fontFamily: "$body",
-                letterSpacing: 1,
-              }}
-            >
-              e2r3p2
-            </Text>
-          </Tabs.Content>
-
-          <Tabs.Content value="tab2" width={"100%"} ai={"center"} jc={"center"}>
-            <H5>Marks</H5>
-          </Tabs.Content>
-
+          <InfoSection
+            email={email}
+            wallet={wallet}
+            cursus_users={cursus_users}
+            location={location}
+            color={color}
+          />
+          <MarkSection />
           <Tabs.Content value="tab3" width={"100%"} ai={"center"} jc={"center"}>
             <H5>Skills</H5>
           </Tabs.Content>
