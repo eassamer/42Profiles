@@ -54,11 +54,7 @@ export interface ProfileData {
       micro: string;
     };
   };
-  cursus_users?: {
-    grade?: string;
-    level?: number;
-    skills?: Skill[];
-  }[];
+  cursus_users?: Cursus[];
   projects_users?: ProjectData[];
   staff?: boolean;
   correction_point: number;
@@ -66,6 +62,11 @@ export interface ProfileData {
   wallet: number;
 }
 
+export interface Cursus {
+  grade?: string;
+  level?: number;
+  skills?: Skill[];
+}
 export interface Skill {
   id: number;
   name: string;

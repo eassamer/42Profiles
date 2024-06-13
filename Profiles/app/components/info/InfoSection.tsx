@@ -1,4 +1,4 @@
-import { Tabs, Text } from "tamagui";
+import { Tabs, Text, H5 } from "tamagui";
 
 export const InfoSection = ({
   email,
@@ -55,7 +55,8 @@ export const InfoSection = ({
         Grade:
         <span style={{ color: color }}> {cursus_users?.[1].grade}</span>
       </Text>
-      <Text
+
+      <H5
         style={{
           color: color,
           textDecorationLine: "underline",
@@ -66,8 +67,8 @@ export const InfoSection = ({
           letterSpacing: 1,
         }}
       >
-        {location}
-      </Text>
+        {location || "Unavailable"}
+      </H5>
     </Tabs.Content>
   );
 };

@@ -1,24 +1,18 @@
 import { useLocalSearchParams } from "expo-router";
 
-import {
-  View,
-  YStack,
-  H2,
-  Text,
-  Button,
-  Image,
-  Tabs,
-  SizableText,
-  Separator,
-  H5,
-} from "tamagui";
-import { ArrowLeft } from "@tamagui/lucide-icons";
-import { router } from "expo-router";
+import { View, YStack, Tabs, SizableText, Separator } from "tamagui";
+
 import React, { useEffect, useState } from "react";
-import { getValueFor, ProfileData } from "../utils";
+import { getValueFor, ProfileData, Skill } from "../utils";
 import { InfoSection } from "../components/info/InfoSection";
 import { MarkSection } from "../components/info/MarkSection";
 import axios from "axios";
+import { SkillSection } from "../components/info/SkillsSection";
+import { ProfileImage } from "../components/ProfileImage";
+import { ProfileName } from "../components/ProfileName";
+import { ProfileLogin } from "../components/ProfileLogin";
+import { ProfileLevel } from "../components/ProfileLevel";
+import { HeaderProfile } from "../components/HeaderProfile";
 export default function Profile() {
   const { id } = useLocalSearchParams();
   const [data, setData] = useState<ProfileData>({
@@ -65,7 +59,7 @@ export default function Profile() {
 
     fetchUser();
   }, []);
-  const color = "#00babc";
+  const color = "#b61282";
 
   const {
     login,
@@ -76,41 +70,11 @@ export default function Profile() {
     location,
     wallet,
   } = data;
+
   return (
     <YStack
       style={{ height: "100%", width: "100%", backgroundColor: "#060317" }}
     >
-      <View
-        ai={"center"}
-        jc={"center"}
-        flexDirection="row"
-        px={20}
-        py={30}
-        style={{
-          width: "100%",
-          height: 50,
-          position: "relative",
-        }}
-      >
-        <Button
-          style={{
-            position: "absolute",
-            left: 20,
-          }}
-          icon={ArrowLeft}
-          onPress={() => router.back()}
-        ></Button>
-        <H2
-          style={{
-            color: "white",
-            fontSize: "24px",
-            fontWeight: "bold",
-            letterSpacing: "2px",
-          }}
-        >
-          Profile
-        </H2>
-      </View>
       <View
         ai={"center"}
         style={{
@@ -119,75 +83,11 @@ export default function Profile() {
           padding: 20,
         }}
       >
-        <Image
-          source={{
-            uri: image.link,
-            width: 200,
-            height: 200,
-          }}
-          style={{
-            borderRadius: 20,
-            border: "2px solid white",
-          }}
-        ></Image>
-        <H2
-          style={{
-            color: "white",
-            fontSize: "24px",
-            fontWeight: "bold",
-            letterSpacing: "1px",
-          }}
-        >
-          {usual_full_name}
-        </H2>
-        <H2
-          style={{
-            color: "white",
-            fontSize: "15px",
-            fontWeight: "bold",
-            letterSpacing: "1px",
-          }}
-        >
-          @{login}
-        </H2>
-        <View
-          ai={"center"}
-          jc={"center"}
-          style={{
-            width: "100%",
-            height: 20,
-            borderRadius: 5,
-            backgroundColor: "transparent",
-            border: "1px solid",
-            borderColor: color,
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "bold",
-              color: "#fff",
-              zIndex: 1,
-              position: "absolute",
-            }}
-          >
-            {cursus_users?.[1].level?.toFixed(2)}%
-          </Text>
-          <View
-            style={{
-              position: "absolute",
-              width: ((cursus_users?.[1].level as number) % 1) * 100 + "%",
-              height: "100%",
-              borderRadius: 1,
-              backgroundColor: color,
-              left: 0,
-              top: 0,
-              zIndex: 0,
-            }}
-          ></View>
-        </View>
+        <HeaderProfile />
+        <ProfileImage image={image.link} />
+        <ProfileName name={usual_full_name} />
+        <ProfileLogin login={login} />
+        <ProfileLevel level={cursus_users?.[1].level as number} color={color} />
         <Tabs
           defaultValue="tab1"
           orientation="horizontal"
@@ -224,9 +124,7 @@ export default function Profile() {
             color={color}
           />
           <MarkSection projects={data?.projects_users} />
-          <Tabs.Content value="tab3" width={"100%"} ai={"center"} jc={"center"}>
-            <H5>Skills</H5>
-          </Tabs.Content>
+          <SkillSection Cursus={data?.cursus_users} />
         </Tabs>
       </View>
     </YStack>

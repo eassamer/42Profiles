@@ -62,7 +62,14 @@ export default function SearchUser() {
           height: "80px",
         }}
       >
-        <Text style={{ color: "white", fontSize: "24px", fontWeight: "bold" }}>
+        <Text
+          style={{
+            color: "white",
+            fontSize: "24px",
+            fontWeight: "bold",
+            letterSpacing: "2px",
+          }}
+        >
           42 Profiles
         </Text>
       </View>

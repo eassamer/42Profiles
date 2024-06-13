@@ -1,11 +1,25 @@
-import { ProjectData, Skill, STATUS_POJECT } from "@/app/utils";
+import { Cursus, ProjectData, Skill, STATUS_POJECT } from "@/app/utils";
 import { Button, H5, ScrollView, Tabs, Text, View } from "tamagui";
 import { Timer } from "@tamagui/lucide-icons";
-export const MarkSection = ({ projects }: { projects?: Skill[] }) => {
+import { useState } from "react";
+
+const getSkills = (cursus: Cursus[]) => {
+  let skills: Skill[] = [];
+  cursus.forEach((cursus) => {
+    cursus.skills?.forEach((skill) => {
+      skills.push(skill);
+    });
+  });
+  return skills;
+};
+
+export const SkillSection = ({ Cursus }: { Cursus?: Cursus[] }) => {
+  const skills = getSkills(Cursus || []);
+
   return (
-    <Tabs.Content value="tab2" width={"100%"} height={300}>
+    <Tabs.Content value="tab3" width={"100%"} height={300}>
       <ScrollView width={"100%"} height={"100%"} flexDirection="column">
-        {projects?.map((project, index) => (
+        {skills?.map((skill, index) => (
           <View
             key={index}
             px={20}
@@ -16,13 +30,13 @@ export const MarkSection = ({ projects }: { projects?: Skill[] }) => {
             jc={"space-between"}
           >
             <H5 fontWeight={"bold"} fontSize={12}>
-              {project.name}
+              {skill.name}
             </H5>
             <Text
               fontWeight={"bold"}
-              color={(project.level as number) < 0 ? "red" : "green"}
+              color={(skill.level as number) < 0 ? "red" : "green"}
             >
-              {project.level}
+              {skill.level.toFixed(2)}
             </Text>
           </View>
         ))}
