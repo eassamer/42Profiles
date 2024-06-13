@@ -1,5 +1,5 @@
 import { Avatar, View, Text } from "tamagui";
-import { ProfileData } from "../utils";
+import { ProfileData } from "../app/utils";
 import { router } from "expo-router";
 export const ResultCard = ({ profileData }: { profileData: ProfileData }) => {
   const { id, login, usual_full_name, image } = profileData;

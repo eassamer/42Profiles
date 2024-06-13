@@ -4,16 +4,16 @@ import { View, YStack, Tabs, SizableText, Separator } from "tamagui";
 
 import React, { useEffect, useState } from "react";
 import { getValueFor, ProfileData, Skill } from "../utils";
-import { InfoSection } from "../components/info/InfoSection";
-import { MarkSection } from "../components/info/MarkSection";
+import { InfoSection } from "../../components/info/InfoSection";
+import { MarkSection } from "../../components/info/MarkSection";
 import axios from "axios";
-import { SkillSection } from "../components/info/SkillsSection";
-import { ProfileImage } from "../components/ProfileImage";
-import { ProfileName } from "../components/ProfileName";
-import { ProfileLogin } from "../components/ProfileLogin";
-import { ProfileLevel } from "../components/ProfileLevel";
-import { HeaderProfile } from "../components/HeaderProfile";
-import { useGetUserById } from "../api/useGetUserById";
+import { SkillSection } from "../../components/info/SkillsSection";
+import { ProfileImage } from "../../components/ProfileImage";
+import { ProfileName } from "../../components/ProfileName";
+import { ProfileLogin } from "../../components/ProfileLogin";
+import { ProfileLevel } from "../../components/ProfileLevel";
+import { HeaderProfile } from "../../components/HeaderProfile";
+import { useGetUserById } from "../../hooks/useGetUserById";
 export default function Profile() {
   const { id } = useLocalSearchParams();
   const [data, setData] = useState<ProfileData>({

@@ -35,9 +35,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <TamaguiProvider config={config}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <Stack screenOptions={{ headerShown: false }}></Stack>
       </TamaguiProvider>
     </ThemeProvider>
   );

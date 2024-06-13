@@ -21,7 +21,7 @@ export const MarkSection = ({ projects }: { projects?: ProjectData[] }) => {
             {project.status != STATUS_POJECT.IN_PROGRESS ? (
               <Text
                 fontWeight={"bold"}
-                color={(project.final_mark as number) < 0 ? "red" : "green"}
+                color={(project.final_mark as number) <= 0 ? "red" : "green"}
               >
                 {project.final_mark}
               </Text>

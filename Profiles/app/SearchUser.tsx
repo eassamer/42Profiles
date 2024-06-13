@@ -12,9 +12,9 @@ import { Search } from "@tamagui/lucide-icons";
 import React, { useEffect } from "react";
 import { router } from "expo-router";
 import { getValueFor, ProfileData } from "./utils";
-import { ResultCard } from "./components/ResultCard";
+import { ResultCard } from "../components/ResultCard";
 import axios from "axios";
-import { useGetUserByLogin } from "./api/useGetUserByLogin";
+import { useGetUserByLogin } from "../hooks/useGetUserByLogin";
 
 export default function SearchUser() {
   const [value, setValue] = React.useState("");
