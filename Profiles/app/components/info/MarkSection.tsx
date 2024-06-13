@@ -33,7 +33,7 @@ export const MarkSection = ({ projects }: { projects?: ProjectData[] }) => {
                 width={"fit-content"}
                 disabled
                 p
-              ></Button>
+              ></Button> 
             )}
           </View>
         ))}

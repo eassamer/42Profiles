@@ -15,9 +15,10 @@ import {
 import { ArrowLeft } from "@tamagui/lucide-icons";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ProfileData, token } from "../utils";
+import { getValueFor, ProfileData } from "../utils";
 import { InfoSection } from "../components/info/InfoSection";
 import { MarkSection } from "../components/info/MarkSection";
+import axios from "axios";
 export default function Profile() {
   const { id } = useLocalSearchParams();
   const [data, setData] = useState<ProfileData>({
@@ -41,25 +42,29 @@ export default function Profile() {
     last_name: "",
     pool_month: "",
   });
-
   useEffect(() => {
-    (async () => {
-      const data = await fetch(`https://api.intra.42.fr/v2/users/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        credentials: "include",
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-      }).then((response) => {
-        return response.json();
-      });
+    const fetchUser = async () => {
+      try {
+        const token = await getValueFor("token");
 
-      setData(data);
-    })();
-  }, [id]);
+        const { data } = await axios.get(
+          `https://api.intra.42.fr/v2/users/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+
+        setData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUser();
+  }, []);
   const color = "#00babc";
 
   const {

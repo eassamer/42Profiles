@@ -1,14 +1,27 @@
 import { View, Text, YStack, Input, XStack, Button, Avatar } from "tamagui";
 import { Search } from "@tamagui/lucide-icons";
-import React from "react";
+import React, { useEffect } from "react";
 import { router } from "expo-router";
-import { ProfileData, token } from "./utils";
+import { getValueFor, ProfileData } from "./utils";
 import { ResultCard } from "./components/ResultCard";
 
 export default function SearchUser() {
   const [value, setValue] = React.useState("");
   const [showError, setShowError] = React.useState(false);
   const [data, setData] = React.useState<ProfileData[]>([]);
+  const [token, setToken] = React.useState<string | null>("");
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const res = await getValueFor("token");
+        setToken(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchToken();
+  }, []);
 
   const handlePress = async () => {
     if (value === "") {
@@ -27,9 +40,11 @@ export default function SearchUser() {
           redirect: "follow",
           referrerPolicy: "no-referrer",
         }
-      ).then((response) => {
-        return response.json();
-      });
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .catch((error) => console.log("ERROR: ", error.message));
 
       setData(data);
     }
@@ -91,11 +106,25 @@ export default function SearchUser() {
             width: "100%",
             height: "80%",
             padding: 20,
-            justifyContent: data ? "flex-start" : "center",
+            justifyContent: data.length != 0 ? "flex-start" : "center",
             alignItems: "center",
             gap: 10,
           }}
         >
+          {data.length === 0 && (
+            <Text
+              color="white"
+              style={{
+                alignSelf: "center",
+                marginTop: 10,
+                fontSize: 20,
+                fontWeight: "bold",
+                letterSpacing: "2px",
+              }}
+            >
+              No result
+            </Text>
+          )}
           {data.map((item, index) => (
             <ResultCard key={index} profileData={item} />
           ))}

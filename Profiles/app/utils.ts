@@ -1,32 +1,41 @@
 import * as SecureStore from "expo-secure-store";
+import { Platform } from "react-native";
+import axios from "axios";
 
-// export async function save(key: string) {
-//   const token = await fetch("https://api.intra.42.fr/oauth/token", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/x-www-form-urlencoded",
-//     },
-//     body: `grant_type=client_credentials&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}`,
-//   })
-//     .then((response) => {
-//       return response.json();
-//     })
-//     .then((data) => {
-//       return data.access_token;
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-//   await SecureStore.setItemAsync(key, token);
-// }
+export async function save() {
+  try {
+    const form = new FormData();
+    form.append("grant_type", "client_credentials");
+    form.append("client_id", process.env.EXPO_PUBLIC_CLIENT_ID as string);
+    form.append(
+      "client_secret",
+      process.env.EXPO_PUBLIC_CLIENT_SECRET as string
+    );
 
-// export async function getValueFor(key: string) {
-//   let result = await SecureStore.getItemAsync(key);
-//   if (result) {
-//     return result;
-//   }
-//   return null;
-// }
+    const res = await axios.post("https://api.intra.42.fr/oauth/token", form);
+
+    Platform.OS == "web"
+      ? localStorage.setItem("token", res.data.access_token)
+      : await SecureStore.setItemAsync("token", res.data.access_token);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getValueFor(key: string) {
+  if (Platform.OS == "web") {
+    let result = localStorage.getItem(key);
+    if (result) {
+      return result;
+    }
+  } else {
+    let result = await SecureStore.getItemAsync(key);
+    if (result) {
+      return result;
+    }
+  }
+  return null;
+}
 
 export interface ProfileData {
   id: number;
@@ -48,11 +57,7 @@ export interface ProfileData {
   cursus_users?: {
     grade?: string;
     level?: number;
-    skills?: {
-      id?: number;
-      name: string;
-      level: number;
-    }[];
+    skills?: Skill[];
   }[];
   projects_users?: ProjectData[];
   staff?: boolean;
@@ -61,6 +66,11 @@ export interface ProfileData {
   wallet: number;
 }
 
+export interface Skill {
+  id: number;
+  name: string;
+  level: number;
+}
 export interface ProjectData {
   id: number;
   final_mark?: number;
@@ -73,10 +83,9 @@ export interface ProjectData {
     parent_id?: number;
   };
 }
-export const token =
-  "bd769b68a35bdecf2fa2212d645a7ef3cf380d0b97cfa0f8d5df0b518f15b6e6";
 
 export const STATUS_POJECT = {
   IN_PROGRESS: "in_progress",
   VALIDATED: "validated",
+  WAITING_VALIDATION: "waiting_for_correction",
 };
