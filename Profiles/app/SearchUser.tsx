@@ -1,9 +1,20 @@
-import { View, Text, YStack, Input, XStack, Button, Avatar } from "tamagui";
+import {
+  View,
+  Text,
+  YStack,
+  Input,
+  XStack,
+  Button,
+  Avatar,
+  ScrollView,
+} from "tamagui";
 import { Search } from "@tamagui/lucide-icons";
 import React, { useEffect } from "react";
 import { router } from "expo-router";
 import { getValueFor, ProfileData } from "./utils";
 import { ResultCard } from "./components/ResultCard";
+import axios from "axios";
+import { useGetUserByLogin } from "./api/useGetUserByLogin";
 
 export default function SearchUser() {
   const [value, setValue] = React.useState("");
@@ -28,24 +39,8 @@ export default function SearchUser() {
       setShowError(true);
     } else {
       setShowError(false);
-      const data = await fetch(
-        `https://api.intra.42.fr/v2/campus/16/users?filter[login]=${value}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          credentials: "include",
-          redirect: "follow",
-          referrerPolicy: "no-referrer",
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .catch((error) => console.log("ERROR: ", error.message));
 
+      const data = await useGetUserByLogin(value, token as string);
       setData(data);
     }
   };
@@ -92,7 +87,10 @@ export default function SearchUser() {
           <Button
             size={"$5"}
             icon={Search}
-            onPress={() => handlePress()}
+            onPress={() => {
+              setData([]);
+              handlePress();
+            }}
           ></Button>
         </XStack>
         {showError && (
@@ -112,13 +110,13 @@ export default function SearchUser() {
           style={{
             width: "100%",
             height: "80%",
-            padding: 20,
             justifyContent: data.length != 0 ? "flex-start" : "center",
             alignItems: "center",
+            paddingTop: 20,
             gap: 10,
           }}
         >
-          {data.length === 0 && (
+          {data.length === 0 ? (
             <Text
               color="white"
               style={{
@@ -131,10 +129,21 @@ export default function SearchUser() {
             >
               No result
             </Text>
+          ) : (
+            <ScrollView width={"100%"} height={"100%"} flexDirection="column">
+              <View
+                width={"100%"}
+                height={"100%"}
+                flexDirection="column"
+                gap={10}
+                px={20}
+              >
+                {data.map((item, index) => (
+                  <ResultCard key={index} profileData={item} />
+                ))}
+              </View>
+            </ScrollView>
           )}
-          {data.map((item, index) => (
-            <ResultCard key={index} profileData={item} />
-          ))}
         </View>
       </View>
     </YStack>

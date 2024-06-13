@@ -13,6 +13,7 @@ import { ProfileName } from "../components/ProfileName";
 import { ProfileLogin } from "../components/ProfileLogin";
 import { ProfileLevel } from "../components/ProfileLevel";
 import { HeaderProfile } from "../components/HeaderProfile";
+import { useGetUserById } from "../api/useGetUserById";
 export default function Profile() {
   const { id } = useLocalSearchParams();
   const [data, setData] = useState<ProfileData>({
@@ -41,17 +42,9 @@ export default function Profile() {
       try {
         const token = await getValueFor("token");
 
-        const { data } = await axios.get(
-          `https://api.intra.42.fr/v2/users/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const data = await useGetUserById(Number(id), token as string);
 
-        setData(data);
+        setData(data as ProfileData);
       } catch (error) {
         console.log(error);
       }
@@ -87,7 +80,7 @@ export default function Profile() {
         <ProfileImage image={image.link} />
         <ProfileName name={usual_full_name} />
         <ProfileLogin login={login} />
-        <ProfileLevel level={cursus_users?.[1].level as number} color={color} />
+        <ProfileLevel level={cursus_users?.[1]?.level || 0} color={color} />
         <Tabs
           defaultValue="tab1"
           orientation="horizontal"
@@ -119,12 +112,12 @@ export default function Profile() {
           <InfoSection
             email={email}
             wallet={wallet}
-            cursus_users={cursus_users}
+            cursus_users={cursus_users || []}
             location={location}
             color={color}
           />
           <MarkSection projects={data?.projects_users} />
-          <SkillSection Cursus={data?.cursus_users} />
+          <SkillSection Cursus={data?.cursus_users || []} />
         </Tabs>
       </View>
     </YStack>

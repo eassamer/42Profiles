@@ -53,7 +53,7 @@ export const InfoSection = ({
         }}
       >
         Grade:
-        <span style={{ color: color }}> {cursus_users?.[1].grade}</span>
+        <span style={{ color: color }}> {cursus_users?.[1]?.grade}</span>
       </Text>
 
       <H5
